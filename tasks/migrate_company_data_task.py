@@ -51,6 +51,16 @@ def map_to_company_securities_list(result) -> List[CompanySecurities]:
     return serialized_data
 
 @task
+def filter_invalid_companies(mapped_data: List[CompanySecurities]) -> List[CompanySecurities]:
+    filtered_data = []
+
+    for record in mapped_data:
+        if isinstance(record['id'], (int, float)) and record['security_id'] is not None:
+            filtered_data.append(record)
+
+    return filtered_data
+
+@task
 def print_data(data):
     """This task prints any data in a formatted way"""
     print(f"Printing {len(data)} records:")
