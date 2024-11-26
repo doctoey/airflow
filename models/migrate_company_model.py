@@ -21,3 +21,23 @@ class CompanySecurities:
     address_zipcode: Optional[str]
     revenue_amount: Optional[float]
     revenue_year: Optional[int]
+
+@dataclass
+class Company:
+    name_th: Optional[str]
+    name_en: Optional[str]
+    business_type: Optional[str]
+    business_characteristics: Optional[str]
+    past_income: Optional[float]
+
+@dataclass
+class CompanyInformation:
+    juristic_id: Optional[str]
+    phone_number: Optional[str]
+    website_url: Optional[str]
+    address_number: Optional[str]
+    road: Optional[str]
+    province: Optional[str]
+    district: Optional[str]
+    sub_district: Optional[str]
+    postal_code: Optional[str]

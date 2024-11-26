@@ -4,7 +4,7 @@ from dataclasses import asdict
 from typing import List
 from airflow.decorators import task
 from airflow.providers.mysql.hooks.mysql import MySqlHook
-from models.migrate_company_model import CompanySecurities
+from models.migrate_company_model import CompanySecurities, Company, CompanyInformation
 
 @task
 def query_all_company_securities():
@@ -59,6 +59,44 @@ def filter_invalid_companies(mapped_data: List[CompanySecurities]) -> List[Compa
             filtered_data.append(record)
 
     return filtered_data
+
+@task
+def map_to_company_list(data: List[CompanySecurities]) -> List[Company]:
+    mapped_data = [
+        Company(
+            name_th=record['name_th'],
+            name_en=record['name_en'],
+            business_type=record['business_type'],
+            business_characteristics=record['product_description'],
+            past_income=record['revenue_amount'],
+        )
+        for record in data
+    ]
+
+    serialized_data = [asdict(record) for record in mapped_data]
+
+    return serialized_data
+
+@task
+def map_to_company_information_list(data: List[CompanySecurities]) -> List[CompanyInformation]:
+    mapped_data = [
+        CompanyInformation(
+            juristic_id=record['juristic_id'],
+            phone_number=record['phone_number'],
+            website_url=record['website_url'],
+            address_number=record['address_number'],
+            road=record['address_road'],
+            province=record['address_province'],
+            district=record['address_district'],
+            sub_district=record['address_subdistrict'],
+            postal_code=record['address_zipcode'],
+        )
+        for record in data
+    ]
+
+    serialized_data = [asdict(record) for record in mapped_data]
+
+    return serialized_data
 
 @task
 def print_data(data):
