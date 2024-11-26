@@ -33,8 +33,8 @@ def migrate_company_data():
     print_company_information_task = print_data(map_to_company_information_list_task)
 
     query_all_company_securities_task >> map_to_company_securities_list_task >> filter_invalid_companies_task
-    filter_invalid_companies_task >> map_company_task >> print_company_task
-    filter_invalid_companies_task >> map_to_company_information_list_task >> print_company_information_task
+    [map_company_task, map_to_company_information_list_task]
+    [print_company_task, print_company_information_task]
 
 
 migrate_company_data()
